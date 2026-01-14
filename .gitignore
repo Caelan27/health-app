@@ -1,9 +1,2 @@
-__pycache__/
-*.pyc
-
 .kitty_venv/
-
-.kivy/
-
-.DS_Store
-
+__pycache__/
