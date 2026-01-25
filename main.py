@@ -10,6 +10,7 @@ class HealthApp(App):
     def build(self):
         screen_manager = ScreenManager()
 
+        # Adds screens to screen manager
         info_screen = InfoScreen(name="InfoScreen")
         screen_manager.add_widget(info_screen)
 

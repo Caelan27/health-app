@@ -1,0 +1,154 @@
+{
+    "quiz": [
+        {
+            "question": "How many portions of fruit and veg do you need a day?",
+            "answers": [
+                "5",
+                "6",
+                "4",
+                "7"
+            ],
+            "correct_answer_index": 0
+        },
+        {
+            "question": "The word 'muscle' comes from what latin word?",
+            "answers": [
+                "Big rat",
+                "Little rabbit",
+                "Big mouse",
+                "Little mouse"
+            ],
+            "correct_answer_index": 3
+        },
+        {
+            "question": "How much moderate aerobic activity should you try to get per week?",
+            "answers": [
+                "None",
+                "300 minutes",
+                "150 minutes",
+                "30 minutes"
+            ],
+            "correct_answer_index": 2
+        },
+        {
+            "question": "Why is protein important in a diet?",
+            "answers": [
+                "It improves eyesight",
+                "It isn't important",
+                "It builds and maintains muscles",
+                "It prevents colds"
+            ],
+            "correct_answer_index": 2
+        },
+        {
+            "question": "Which of these is a way for children to get exercise?",
+            "answers": [
+                "Sleeping",
+                "Dancing",
+                "Watching TV",
+                "Playing video games"
+            ],
+            "correct_answer_index": 1
+        }
+    ],
+    "information-pages": [
+        {
+            "id": "why",
+            "title": "Why you should have a healthy lifestyle",
+            "img": "cyclist.jpg",
+            "sections": [
+                {
+                    "heading-title": "Mental Health",
+                    "text": "Having a healthy lifestyle can prevent mental health issues such as depression."
+                },
+                {
+                    "heading-title": "Reducing the risk of diseases",
+                    "text": "Having a healthy lifestyle can lower the risk of getting certain health conditions, such as diabetes, cancer and arthritis."
+                }
+            ]
+        },
+        {
+            "id": "eating",
+            "title": "How to Eat Healthy",
+            "img": "fruit-and-veg.jpg",
+            "sections": [
+                {
+                    "heading-title": "Fruit and Vegetables",
+                    "text": "You should aim to eat at least five 80 gram portions of fruit and vegetables a day."
+                },
+                {
+                    "heading-title": "Protein",
+                    "text": "Protein is important for your muscles. You should eat at least 0.75g per kg of your body weight per day."
+                }
+            ]
+        },
+        {
+            "id": "exercise",
+            "title": "Exercise",
+            "img": "runners.jpg",
+            "sections": [
+                {
+                    "heading-title": "How much should you exercise?",
+                    "text": "You should aim to get at least 150 minutes of moderate aerobic activity a week or 75 minutes of vigorous aerobic activity a week."
+                },
+                {
+                    "heading-title": "Strength Training",
+                    "text": "You should do strength training for all major muscle groups at least twice a week."
+                },
+                {
+                    "heading-title": "Ways to Exercise for Children",
+                    "text": "Some fun ways for children to get exercise include:\n- Dancing\n- Playing tig\n- Going on walks\n- Going to the park"
+                }
+            ]
+        },
+        {
+            "id": "mental-health",
+            "title": "Mental Health",
+            "img": "brain.jpg",
+            "sections": [
+                {
+                    "heading-title": "How to look after your mental health",
+                    "text": "Some methods you can use to look after your mental health include:\n- Being in the present\n- Getting good sleep\n- Spending time with others\n- Spending time doing hobbies you enjoy"
+                },
+                {
+                    "heading-title": "What happens if you don't have good mental health?",
+                    "text": "Poor mental health can affect your life in lots of unwanted ways. These include feeling sad or anxious or having trouble sleeping."
+                }
+            ]
+        },
+        {
+            "id": "alcohol",
+            "title": "Alcohol",
+            "img": "beer.jpg",
+            "sections": [
+                {
+                    "heading-title": "Risks of alcohol",
+                    "text": "Regularly drinking too much alcohol can lead to cancer, strokes, heart disease, liver disease, brain damage and damage to the nervous system."
+                },
+                {
+                    "heading-title": "The law around alcohol",
+                    "text": "In Scotland, you must be 18 to buy alcohol. It is illegal to give alcohol to a child under the age of five, although other people under 18 may drink alcohol at home. It is not recommended for anyone below 18 to drink alcohol."
+                }
+            ]
+        },
+        {
+            "id": "fun-facts",
+            "title": "Fun Facts",
+            "img": "slide.jpg",
+            "sections": [
+                {
+                    "heading-title": "Fun facts about food",
+                    "text": "- Milk is good for your bones and teeth\n- Bananas are technically a berry\n- Chewing on lean meat is good for your jaw muscles\n- Strawberries are the only fruit with seeds on the outside\n- Apples, pears, and peaches are all in the rose family"
+                },
+                {
+                    "heading-title": "Fun facts about exercise",
+                    "text": "- The word 'muscle' comes from the Latin for 'little mouse' (musculus)\n- Your left lung is 10% smaller than your right lung to leave room for your heart\n- Your blood makes up 8% of your body weight\n- Students who exercise tend to have better grades than those who don't"
+                },
+                {
+                    "heading-title": "Random fun facts",
+                    "text": "- Laughing 100 times is equivalent to 15 minutes of exercise on a stationary bike\n- You burn more calories sleeping than you do watching television\n- Right-handed people live on average nine years longer than left-handed people\n- During your lifetime, you eat about 30,000kg of food, which is the weight of around six African elephants."
+                }
+            ]
+        }
+    ]
+}
