@@ -145,6 +145,11 @@ class CustomScreen(Screen):
         """Adds a button to go to the next page"""
         self._add_button(text="Next", on_release_func=self._go_to_next_page)
 
+    def _add_previous_page_button(self):
+        """Adds a button to go to the next page"""
+        self._add_button(
+            text="Back", on_release_func=self._go_to_previous_page)
+
     def _add_home_button(self):
         """Adds a button to return to the home screen."""
         self._add_button(text="Home", size_hint_x=0.2,

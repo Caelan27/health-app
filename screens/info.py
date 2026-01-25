@@ -102,9 +102,7 @@ class InfoScreen(CustomScreen):
                 - Adds the button to the layout
         """
         if self.curr_page_index != self.max_page_index:
-            self._add_button(text="Next Page",
-                             on_release_func=self._go_to_next_page)
+            self._add_next_page_button()
 
         if self.curr_page_index != 0:
-            self._add_button(text="Previous Page",
-                             on_release_func=self._go_to_previous_page)
+            self._add_previous_page_button()
