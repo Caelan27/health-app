@@ -30,6 +30,9 @@ class GameScreen(Screen):
         self.gridlayout.game_state.bind(
             player_health=self._update_health_label)
 
+        self.gridlayout.game_state.bind(
+            game_over=self.display_game_over_screen)
+
         boxlayout.add_widget(self.health_label)
 
         boxlayout.add_widget(self.gridlayout)
@@ -38,6 +41,12 @@ class GameScreen(Screen):
 
     def _update_health_label(self, instance, value):
         self.health_label.text = "Health: " + str(value)
+
+    def display_game_over_screen(self, instance, value):
+        if self.gridlayout.game_state.game_over:
+            self.clear_widgets()
+            game_over_label = Label(text="Game Over!")
+            self.add_widget(game_over_label)
 
     def button_press_reaction(self, button):
         self.move_player(button)

@@ -18,6 +18,7 @@ class GameGrid(GridLayout):
 
     def _draw(self):
         self.clear_widgets()
+
         grid = self.game_state.grid
 
         for (y, row) in enumerate(grid):
@@ -42,4 +43,5 @@ class GameGrid(GridLayout):
     def _interact_with_tile(self, button):
         self.game_state.interact_with_tile(button.grid_position)
         self.game_state.refresh_grid()
+
         self._draw()

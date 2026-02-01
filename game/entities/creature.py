@@ -16,9 +16,14 @@ class Creature(Entity):
 
     def take_damage(self, amount):
         self.curr_health -= amount
-        if self.curr_health < 0:
+        if self.curr_health <= 0:
             self.curr_health = 0
             self.handle_death()
+
+    def heal(self, amount):
+        self.curr_health += amount
+        if self.curr_health > self.max_health:
+            self.curr_health = self.max_health
 
     def is_alive(self):
         return self.curr_health > 0

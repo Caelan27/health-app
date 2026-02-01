@@ -6,12 +6,14 @@ from game.entities.items import Food
 from game.entities.items import HealthyFood
 from game.entities.creature import Creature
 from kivy.properties import NumericProperty
+from kivy.properties import BooleanProperty
 from kivy.event import EventDispatcher
 from random import randint
 
 
 class GameState(EventDispatcher):
     player_health = NumericProperty(10)
+    game_over = BooleanProperty(False)
 
     def __init__(self, width, height, **kwargs):
         super().__init__(**kwargs)
@@ -41,7 +43,29 @@ class GameState(EventDispatcher):
         (player_x, player_y) = self.player.position
         self.grid[player_y][player_x].entity = self.player
 
+        self.player.curr_health = self.player_health
+        self.player.on_health_changed = self._sync_health_from_player
+
         self.advance_time()
+
+    def move_creature(self, creature, destination):
+        (origin_x, origin_y) = creature.position
+        (destination_x, destination_y) = destination
+
+        if not self.in_bounds(destination):
+            return False
+
+        if not isinstance(self.grid[destination_y][destination_x].entity, Empty):
+            return False
+
+        self.grid[destination_y][destination_x].entity = creature
+        creature.position = destination
+        self.grid[origin_y][origin_x].entity = Empty()
+
+        return True
+
+    def _sync_health_from_player(self):
+        self.player_health = self.player.curr_health
 
     def interact_with_tile(self, tile_location):
         (tile_x, tile_y) = tile_location
@@ -63,17 +87,23 @@ class GameState(EventDispatcher):
     def enemy_turn(self):
         if self.current_actor is None:
             return
-        self.current_actor.take_turn()
-        self.attack_creature(self.current_actor, self.player.position)
+        self.current_actor.take_turn(self.player, self)
+        # self.attack_creature(self.current_actor, self.player.position)
         self.end_turn()
 
     def end_turn(self):
+        print(self.player_health, self.player.curr_health)
         actor = self.current_actor
         if actor is not None:
             actor.turn_meter -= 10
         self.current_actor = None
+        if not self.player.is_alive:
+            self.handle_player_death()
         self.remove_dead()
         self.advance_time()
+
+    def handle_player_death(self):
+        self.game_over = True
 
     def refresh_grid(self):
         self.remove_dead()
@@ -126,7 +156,7 @@ class GameState(EventDispatcher):
 
     def power_up(self, food):
         print("Yay (: Eating food...")
-        self.player_health += 2
+        self.player.heal(2)
 
     def move_player(self, destination):
         player = self.player
