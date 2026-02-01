@@ -23,6 +23,9 @@ class GameState(EventDispatcher):
         self.player = Player((0, 0))
         self.current_actor = None
 
+        self.enemy_spawn_timer = randint(5, 20)
+        self.food_spawn_timer = randint(5, 20)
+
     def initialise_grid(self):
         for y in range(self.height):
             self.grid.append([])
@@ -100,7 +103,38 @@ class GameState(EventDispatcher):
         if not self.player.is_alive:
             self.handle_player_death()
         self.remove_dead()
+
+        print(self.enemy_spawn_timer)
+        self.enemy_spawn_timer -= 1
+        if self.enemy_spawn_timer == 0:
+            self.spawn_enemy()
+            self.enemy_spawn_timer = randint(5, 20)
+
+        print(self.enemy_spawn_timer)
+        self.food_spawn_timer -= 1
+        if self.food_spawn_timer == 0:
+            self.spawn_food()
+            self.food_spawn_timer = randint(5, 20)
+
         self.advance_time()
+
+    def spawn_enemy(self):
+        spawned = False
+        while not spawned:
+            (enemy_x, enemy_y) = (randint(0, 4), randint(0, 4))
+            entity = self.grid[enemy_y][enemy_x].entity
+            if isinstance(entity, Empty):
+                self.grid[enemy_y][enemy_x].entity = Enemy((enemy_x, enemy_y))
+                spawned = True
+
+    def spawn_food(self):
+        spawned = False
+        while not spawned:
+            (food_x, food_y) = (randint(0, 4), randint(0, 4))
+            entity = self.grid[food_y][food_x].entity
+            if isinstance(entity, Empty):
+                self.grid[food_y][food_x].entity = Food()
+                spawned = True
 
     def handle_player_death(self):
         self.game_over = True

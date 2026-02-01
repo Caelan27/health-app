@@ -46,7 +46,8 @@ class Enemy(Creature):
             if self.is_adjacent(player.position):
                 successful = self.attack_creature(player)
             else:
-                successful = self.move_towards_player(player, game_state)
+                self.move_towards_player(player, game_state)
+                successful = True
 
     def is_adjacent(self, location):
         (ax, ay) = self.position
