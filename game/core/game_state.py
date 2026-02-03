@@ -2,8 +2,7 @@ from game.core.tile import Tile
 from game.entities.empty import Empty
 from game.entities.player import Player
 from game.entities.enemy import Enemy
-from game.entities.items import Food
-from game.entities.items import HealthyFood
+from game.entities.items import Item
 from game.entities.creature import Creature
 from game.core.entity_factory import EntityFactory
 from kivy.properties import NumericProperty
@@ -13,7 +12,12 @@ from random import randint
 
 
 class GameState(EventDispatcher):
-    player_health = NumericProperty(10)
+    curr_player_health = NumericProperty()
+    max_player_health = NumericProperty()
+    player_speed = NumericProperty()
+    player_attack_damage = NumericProperty()
+    score = NumericProperty(0)
+
     game_over = BooleanProperty(False)
 
     def __init__(self, width, height, **kwargs):
@@ -26,6 +30,10 @@ class GameState(EventDispatcher):
         self.entity_factory = EntityFactory()
 
         self.player = self.entity_factory.create_player((0, 0))
+        self.curr_player_health = self.player.curr_health
+        self.max_player_health = self.player.max_health
+        self.player_speed = self.player.speed
+        self.player_attack_damage = self.player.attack_damage
 
         self.enemy_spawn_timer = randint(5, 20)
         self.food_spawn_timer = randint(5, 20)
@@ -36,23 +44,14 @@ class GameState(EventDispatcher):
             for x in range(self.width):
                 self.grid[y].append(Tile(Empty()))
 
-        (food_x, food_y) = (randint(0, 4), randint(0, 4))
-        while (food_x, food_y) == (0, 0):
-            (food_x, food_y) = (randint(0, 4), randint(0, 4))
-        self.grid[food_y][food_x].entity = HealthyFood()
+        self.spawn_food()
 
         self.spawn_enemy()
-        # (enemy_x, enemy_y) = (randint(0, 4), randint(0, 4))
-        # while ((enemy_x, enemy_y) == (0, 0)
-        # or (enemy_x, enemy_y) == (food_x, food_y)):
-        # (enemy_x, enemy_y) = (randint(0, 4), randint(0, 4))
-        # self.grid[enemy_y][enemy_x].entity = Enemy((enemy_x, enemy_y))
 
         (player_x, player_y) = self.player.position
         self.grid[player_y][player_x].entity = self.player
 
-        self.player.curr_health = self.player_health
-        self.player.on_health_changed = self._sync_health_from_player
+        self.player.on_stats_changed = self._sync_stats_from_player
 
         self.advance_time()
 
@@ -72,8 +71,11 @@ class GameState(EventDispatcher):
 
         return True
 
-    def _sync_health_from_player(self):
-        self.player_health = self.player.curr_health
+    def _sync_stats_from_player(self):
+        self.curr_player_health = self.player.curr_health
+        self.max_player_health = self.player.max_health
+        self.player_speed = self.player.speed
+        self.player_attack_damage = self.player.attack_damage
 
     def interact_with_tile(self, tile_location):
         (tile_x, tile_y) = tile_location
@@ -84,22 +86,25 @@ class GameState(EventDispatcher):
         if self.current_actor == self.player:
             if isinstance(entity, Empty):
                 did_something = self.move_player(tile_location)
-            elif isinstance(entity, Food):
+            elif isinstance(entity, Item):
                 did_something = self.eat_food(tile_location)
             elif isinstance(entity, Creature):
                 did_something = self.attack_creature(
                     self.player, tile_location)
 
         if did_something:
-            print("Player taking turn")
+            self.handle_decay()
             self.end_turn()
 
     def enemy_turn(self):
         if self.current_actor is None:
             return
         self.current_actor.take_turn(self.player, self)
-        # self.attack_creature(self.current_actor, self.player.position)
         self.end_turn()
+
+    def handle_decay(self):
+        self.player.decay()
+        self.player.decay_countdown()
 
     def end_turn(self):
         actor = self.current_actor
@@ -128,8 +133,9 @@ class GameState(EventDispatcher):
             (enemy_x, enemy_y) = (randint(0, 4), randint(0, 4))
             entity = self.grid[enemy_y][enemy_x].entity
             if isinstance(entity, Empty):
-                self.grid[enemy_y][enemy_x].entity = self.entity_factory.random_enemy(
-                    (enemy_x, enemy_y))
+                enemy = self.entity_factory.random_enemy((enemy_x, enemy_y))
+                enemy.adjust_stats(self.score)
+                self.grid[enemy_y][enemy_x].entity = enemy
                 spawned = True
 
     def spawn_food(self):
@@ -138,7 +144,7 @@ class GameState(EventDispatcher):
             (food_x, food_y) = (randint(0, 4), randint(0, 4))
             entity = self.grid[food_y][food_x].entity
             if isinstance(entity, Empty):
-                self.grid[food_y][food_x].entity = Food()
+                self.grid[food_y][food_x].entity = self.entity_factory.random_item()
                 spawned = True
 
     def handle_player_death(self):
@@ -167,16 +173,15 @@ class GameState(EventDispatcher):
                         entity = self.grid[y][x].entity
                         if isinstance(entity, Creature):
                             entity.turn_meter += entity.speed
-                            print(entity.sprite, entity.turn_meter)
                             if entity.turn_meter >= 100:
                                 ready_actors.append(entity)
 
-            self.current_actor = ready_actors[0]
-
-            if isinstance(self.current_actor, Enemy):
-                self.enemy_turn()
-            elif isinstance(self.current_actor, Player):
-                break
+            for actor in ready_actors:
+                self.current_actor = actor
+                if isinstance(self.current_actor, Enemy):
+                    self.enemy_turn()
+                elif isinstance(self.current_actor, Player):
+                    return
 
     def attack_creature(self, attacker, creature_location):
         (creature_x, creature_y) = creature_location
@@ -204,8 +209,20 @@ class GameState(EventDispatcher):
             tile.entity = Empty()
             return True
 
-    def power_up(self, food):
-        self.player.heal(2)
+    def power_up(self, item):
+        self.player.max_health += item.max_health_boost
+        self.player.speed += item.speed_boost
+        self.player.attack_damage += item.attack_boost
+        self.player.heal(item.curr_health_boost)
+
+        self.player.attack_damage_decay.append(item.attack_decay)
+        self.player.speed_decay.append(item.speed_decay)
+        self.player.max_health_decay.append(item.max_health_decay)
+        self.player.decay_duration_left.append(item.decay_duration)
+
+        self.score += item.score_boost
+
+        self._sync_stats_from_player()
 
     def move_player(self, destination):
         player = self.player

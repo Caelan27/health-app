@@ -2,15 +2,15 @@
     "orc": {
         "health": {
             "base": 20,
-            "scale": 2
+            "scale": 1
         },
         "speed": {
             "base": 8,
-            "scale": 0.5
+            "scale": 1
         },
         "attack": {
             "base": 6,
-            "scale": 0.2
+            "scale": 1
         },
         "sprite": "orc"
     },
@@ -21,11 +21,11 @@
         },
         "speed": {
             "base": 20,
-            "scale": 3
+            "scale": 1
         },
         "attack": {
             "base": 1,
-            "scale": 0.2
+            "scale": 1
         },
         "sprite": "goblin"
     }

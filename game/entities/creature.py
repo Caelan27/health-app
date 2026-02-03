@@ -20,9 +20,6 @@ class Creature(Entity):
         self.attack_damage = self.base_attack
         self.speed = self.base_speed
 
-        print(self.sprite)
-        print(self.speed)
-
         self.is_alive = True
         self.turn_meter = 0
 

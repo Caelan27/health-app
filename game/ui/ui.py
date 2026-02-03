@@ -4,7 +4,7 @@ from game.core.game_state import GameState
 from game.entities.player import Player
 from game.entities.enemy import Enemy
 from game.entities.empty import Empty
-from game.entities.items import Food
+from game.entities.items import Item
 
 
 class GameGrid(GridLayout):
@@ -33,7 +33,7 @@ class GameGrid(GridLayout):
                     button.background_color = (1, 0, 0, 1)
                 elif isinstance(entity, Empty):
                     button.background_color = (0, 1, 0, 1)
-                elif isinstance(entity, Food):
+                elif isinstance(entity, Item):
                     button.background_color = (0, 0, 1, 1)
                 elif isinstance(entity, Enemy):
                     button.background_color = (1, 1, 0, 1)

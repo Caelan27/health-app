@@ -2,6 +2,7 @@ import os
 import json
 from game.entities.enemy import Enemy
 from game.entities.player import Player
+from game.entities.items import Item
 from random import choice
 
 CURRENT_DIR = os.path.dirname(__file__)
@@ -11,12 +12,16 @@ class EntityFactory:
     def __init__(self):
         enemies = parse_json("enemies.json")
         player = parse_json("player.json")
-        # items = parse_json("data/items.json") -- not yet implemented
-        self.data = {"enemies": enemies, "player": player}
+        items = parse_json("items.json")
+        self.data = {"enemies": enemies, "player": player, "items": items}
 
     def random_enemy(self, position):
         (enemy_name, enemy_data) = choice(list(self.data["enemies"].items()))
         return self.create_enemy(position, enemy_name)
+
+    def random_item(self):
+        (item_name, item_data) = choice(list(self.data["items"].items()))
+        return self.create_item(item_name)
 
     def create_enemy(self, position, enemy_name):
         enemy_data = self.data["enemies"][enemy_name]
@@ -30,13 +35,19 @@ class EntityFactory:
 
     def create_item(self, item_name):
         # TODO: Make this method
-        pass
+        item_data = self.data["items"][item_name]
+
+        stats = item_data.copy()
+        sprite = stats.pop("sprite")
+
+        item = Item(stats=stats, sprite=sprite)
+
+        return item
 
     def create_player(self, position):
         player_data = self.data["player"]["player"]
 
         stats = player_data.copy()
-        print(stats)
         sprite = stats.pop("sprite")
 
         player = Player(position=position, stats=stats, sprite=sprite)

@@ -20,27 +20,73 @@ class GameScreen(Screen):
 
         self.gridlayout = GameGrid()
 
-        health = self.gridlayout.game_state.player_health
+        curr_health = self.gridlayout.game_state.curr_player_health
+        max_health = self.gridlayout.game_state.max_player_health
 
-        self.health_label = Label(text=str(health), size_hint_y=0.05)
+        stat_label_size_hint_y = 0.02
 
-        self.health_label.text = "Health: " + \
-            str(self.gridlayout.game_state.player_health)
+        self.health_label = Label(
+            text=f"Health: {curr_health} / {max_health}", size_hint_y=stat_label_size_hint_y)
 
         self.gridlayout.game_state.bind(
-            player_health=self._update_health_label)
+            curr_player_health=self._update_health_label)
+
+        self.gridlayout.game_state.bind(
+            max_player_health=self._update_health_label)
+
+        speed = self.gridlayout.game_state.player_speed
+        self.speed_label = Label(
+            text=f"Speed: {speed}", size_hint_y=stat_label_size_hint_y)
+
+        self.gridlayout.game_state.bind(
+            player_speed=self._update_speed_label)
+
+        attack_damage = self.gridlayout.game_state.player_attack_damage
+        self.attack_damage_label = Label(
+            text=f"Attack damage: {attack_damage}", size_hint_y=stat_label_size_hint_y)
+
+        self.gridlayout.game_state.bind(
+            player_attack_damage=self._update_attack_damage_label)
 
         self.gridlayout.game_state.bind(
             game_over=self.display_game_over_screen)
 
+        score = self.gridlayout.game_state.score
+        self.score_label = Label(
+            text=f"Score: {score}", size_hint_y=stat_label_size_hint_y)
+
+        self.gridlayout.game_state.bind(
+            score=self._update_score_label)
+
         boxlayout.add_widget(self.health_label)
+        boxlayout.add_widget(self.speed_label)
+        boxlayout.add_widget(self.attack_damage_label)
+        boxlayout.add_widget(self.score_label)
 
         boxlayout.add_widget(self.gridlayout)
 
         self.add_widget(boxlayout)
 
     def _update_health_label(self, instance, value):
-        self.health_label.text = "Health: " + str(value)
+        curr_health = self.gridlayout.game_state.curr_player_health
+        max_health = self.gridlayout.game_state.max_player_health
+
+        self.health_label.text = f"Health: {curr_health} / {max_health}"
+
+    def _update_score_label(self, instance, value):
+        score = self.gridlayout.game_state.score
+
+        self.score_label.text = f"Score: {score}"
+
+    def _update_attack_damage_label(self, instance, value):
+        attack_damage = self.gridlayout.game_state.player_attack_damage
+
+        self.attack_damage_label.text = f"Attack damage: {attack_damage}"
+
+    def _update_speed_label(self, instance, value):
+        speed = self.gridlayout.game_state.player_speed
+
+        self.speed_label.text = f"Speed: {speed}"
 
     def display_game_over_screen(self, instance, value):
         if self.gridlayout.game_state.game_over:

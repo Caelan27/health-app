@@ -48,6 +48,17 @@ class Enemy(Creature):
                 self.move_towards_player(player, game_state)
                 successful = True
 
+    def adjust_stats(self, score):
+        print("Adjusting stats...")
+
+        self.max_health = round(self.base_health + self.health_scale * score)
+        self.curr_health = self.max_health
+        self.speed = round(self.base_speed + self.speed_scale * score)
+        self.attack_damage = round(
+            self.base_attack + self.attack_scale * score)
+        print(f"{self.max_health}, {self.curr_health}, {
+              self.speed}, {self.attack_damage}")
+
     def is_adjacent(self, location):
         (ax, ay) = self.position
         (bx, by) = location
