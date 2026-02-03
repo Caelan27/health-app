@@ -1,0 +1,32 @@
+{
+    "orc": {
+        "health": {
+            "base": 20,
+            "scale": 2
+        },
+        "speed": {
+            "base": 8,
+            "scale": 0.5
+        },
+        "attack": {
+            "base": 6,
+            "scale": 0.2
+        },
+        "sprite": "orc"
+    },
+    "goblin": {
+        "health": {
+            "base": 5,
+            "scale": 1
+        },
+        "speed": {
+            "base": 20,
+            "scale": 3
+        },
+        "attack": {
+            "base": 1,
+            "scale": 0.2
+        },
+        "sprite": "goblin"
+    }
+}

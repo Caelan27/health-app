@@ -2,10 +2,9 @@ from game.entities.creature import Creature
 
 
 class Enemy(Creature):
-    def __init__(self, position):
-        super().__init__(10, 10, 1, 4)
+    def __init__(self, position, **kwargs):
+        super().__init__(**kwargs)
         self.position = position
-        self.sprite_name = "enemy"
 
     def move_towards_player(self, player, game_state):
         (player_x, player_y) = player.position
