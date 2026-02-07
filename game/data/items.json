@@ -1,5 +1,5 @@
 {
-    "chicken_breast": {
+    "chicken": {
         "max_health": {
             "boost": 4,
             "decay": 0
@@ -15,7 +15,7 @@
         "curr_health_boost": 3,
         "score_boost": 2,
         "decay_duration": 0,
-        "sprite": "chicken_breast"
+        "sprite": "chicken.png"
     },
     "pizza": {
         "max_health": {
@@ -33,6 +33,6 @@
         "curr_health_boost": 5,
         "decay_duration": 5,
         "score_boost": 2,
-        "sprite": "pizza"
+        "sprite": "pizza.png"
     }
 }

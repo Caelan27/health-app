@@ -12,7 +12,7 @@
             "base": 6,
             "scale": 1
         },
-        "sprite": "orc"
+        "sprite": "orc.png"
     },
     "goblin": {
         "health": {
@@ -27,6 +27,6 @@
             "base": 1,
             "scale": 1
         },
-        "sprite": "goblin"
+        "sprite": "goblin.png"
     }
 }

@@ -29,19 +29,16 @@ class GameGrid(GridLayout):
                 button.grid_position = (x, y)
                 button.bind(on_release=self._interact_with_tile)
 
-                if isinstance(entity, Player):
-                    button.background_color = (1, 0, 0, 1)
-                elif isinstance(entity, Empty):
-                    button.background_color = (0, 1, 0, 1)
-                elif isinstance(entity, Item):
-                    button.background_color = (0, 0, 1, 1)
-                elif isinstance(entity, Enemy):
-                    button.background_color = (1, 1, 0, 1)
+                if isinstance(entity, Empty):
+                    print("(:")
+                else:
+                    button.background_normal = "game/img/" + entity.sprite
+                    button.background_down = "game/img/" + entity.sprite
 
                 self.add_widget(button)
 
     def _interact_with_tile(self, button):
         self.game_state.interact_with_tile(button.grid_position)
-        self.game_state.refresh_grid()
+        self.game_state.remove_dead()
 
         self._draw()
