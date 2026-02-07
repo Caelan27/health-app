@@ -5,6 +5,7 @@ from game.entities.enemy import Enemy
 from game.entities.items import Item
 from game.entities.creature import Creature
 from game.core.entity_factory import EntityFactory
+from game.helpers import is_adjacent
 from kivy.properties import NumericProperty
 from kivy.properties import BooleanProperty
 from kivy.event import EventDispatcher
@@ -214,7 +215,7 @@ class GameState(EventDispatcher):
             - Makes the enemy take a turn
             - Handle the end of turn operations
         """
-        self.current_actor.take_turn(self.player, self)
+        self.current_actor.take_turn(self)
         self.end_turn()
 
     def handle_decay(self):
@@ -419,12 +420,12 @@ class GameState(EventDispatcher):
         (creature_x, creature_y) = creature_location
         attacker_position = attacker.position
 
-        if (self.is_adjacent(attacker_position, creature_location)
+        if (is_adjacent(attacker_position, creature_location)
                 and self.in_bounds(creature_location)
                 and attacker_position != creature_location):
             tile = self.grid[creature_y][creature_x]
             creature = tile.entity
-            attacker.deal_damage(creature)
+            attacker.attack_creature(creature)
 
             return True
         else:
@@ -451,7 +452,7 @@ class GameState(EventDispatcher):
         (item_x, item_y) = item_location
         player_position = self.player.position
 
-        if (self.is_adjacent(player_position, item_location)
+        if (is_adjacent(player_position, item_location)
                 and self.in_bounds(item_location)):
             tile = self.grid[item_y][item_x]
             item = tile.entity
@@ -517,7 +518,7 @@ class GameState(EventDispatcher):
 
         (destination_x, destination_y) = destination
 
-        if (self.is_adjacent(origin, destination)
+        if (is_adjacent(origin, destination)
                 and self.in_bounds(destination)):
             grid[destination_y][destination_x].entity = player
             player.position = destination
@@ -543,26 +544,3 @@ class GameState(EventDispatcher):
         """
         (x, y) = position
         return not (x < 0 or y < 0 or x >= self.width or y >= self.height)
-
-    def is_adjacent(self, a, b):
-        """
-        Checks that two positions are adjacent.
-        Diagonal counts as adjacent.
-
-        Args:
-            - a (tuple[int, int]):
-                One of the positions
-            - b (tuple[int, int]):
-                The other position
-
-        Returns:
-            - boolean:
-                True if they are adjacent
-                False if not
-        """
-        (ax, ay) = a
-        (bx, by) = b
-        dx = abs(bx - ax)
-        dy = abs(by - ay)
-
-        return dx <= 1 and dy <= 1
