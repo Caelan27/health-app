@@ -19,4 +19,4 @@ class Empty(Entity):
             - Sets the sprite name
         """
         super().__init__()
-        self.sprite_name = "empty"
+        self.sprite = "empty"

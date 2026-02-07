@@ -1,5 +1,6 @@
 from game.entities.base import Entity
 from game.helpers import is_adjacent
+from kivy.properties import NumericProperty, BooleanProperty
 
 
 class Creature(Entity):
@@ -36,6 +37,12 @@ class Creature(Entity):
             Measures how close the creature is to having their turn
     """
 
+    max_health = NumericProperty()
+    curr_health = NumericProperty()
+    attack_damage = NumericProperty()
+    speed = NumericProperty()
+    is_alive = BooleanProperty(True)
+
     def __init__(self, **kwargs):
         """
         Initialises the creature.
@@ -68,7 +75,6 @@ class Creature(Entity):
         self.attack_damage = self.base_attack
         self.speed = self.base_speed
 
-        self.is_alive = True
         self.turn_meter = 0
 
     def attack_creature(self, target):

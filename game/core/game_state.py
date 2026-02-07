@@ -71,7 +71,7 @@ class GameState(EventDispatcher):
             - Creates an EntityFactory
             - Create the player at the position (0, 0)
             - Start enemy and item spawn timers
-            - Sync the player stats from the player entity
+            - Initialises the grid
         """
         super().__init__()
 
@@ -94,6 +94,8 @@ class GameState(EventDispatcher):
         self.player_speed = self.player.speed
         self.player_attack_damage = self.player.attack_damage
 
+        self.initialise_grid()
+
     def initialise_grid(self):
         """
         Initialises the grid.
@@ -101,7 +103,6 @@ class GameState(EventDispatcher):
         Actions:
             - Adds the correct number of buttons to the grid
             - Adds the player to the grid
-            - Gives the player a function to sync its stats
             - Adds an item to the grid
             - Adds an enemy to the grid
             - Starts the game by advancing time
@@ -113,8 +114,6 @@ class GameState(EventDispatcher):
 
         (player_x, player_y) = self.player.position
         self.grid[player_y][player_x].entity = self.player
-
-        self.player.on_stats_changed = self._sync_stats_from_player
 
         self.spawn_item()
 
@@ -157,18 +156,6 @@ class GameState(EventDispatcher):
         self.grid[origin_y][origin_x].entity = Empty()
 
         return True
-
-    def _sync_stats_from_player(self):
-        """
-        Syncs the player's stats.
-
-        Actions:
-            - Goes through each stat, giving the NumericProperty in this class the value of the player's int attribute
-        """
-        self.curr_player_health = self.player.curr_health
-        self.max_player_health = self.player.max_health
-        self.player_speed = self.player.speed
-        self.player_attack_damage = self.player.attack_damage
 
     def interact_with_tile(self, tile_location):
         """
@@ -490,8 +477,6 @@ class GameState(EventDispatcher):
         self.player.decay_duration_left.append(item.decay_duration)
 
         self.score += item.score_boost
-
-        self._sync_stats_from_player()
 
     def move_player(self, destination):
         """

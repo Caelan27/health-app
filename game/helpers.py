@@ -21,3 +21,16 @@ def is_adjacent(a, b):
     dy = abs(by - ay)
 
     return dx <= 1 and dy <= 1
+
+
+def sign(number):
+    """
+    Returns the sign of a number
+
+    Returns:
+        - int:
+            1 if positive
+            0 if zero
+            -1 if negative
+    """
+    return (number > 0) - (number < 0)

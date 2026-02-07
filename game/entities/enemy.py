@@ -1,5 +1,5 @@
 from game.entities.creature import Creature
-from game.helpers import is_adjacent
+from game.helpers import is_adjacent, sign
 
 
 class Enemy(Creature):
@@ -90,8 +90,3 @@ class Enemy(Creature):
         self.speed = round(self.base_speed + self.speed_scale * score)
         self.attack_damage = round(
             self.base_attack + self.attack_scale * score)
-
-
-def sign(number):
-    # TODO: Make this a helper function in a separate file
-    return (number > 0) - (number < 0)
