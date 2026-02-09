@@ -10,6 +10,7 @@ from kivy.properties import NumericProperty
 from kivy.properties import BooleanProperty
 from kivy.event import EventDispatcher
 from random import randint, choice
+from kivy.core.audio import SoundLoader
 
 
 class GameState(EventDispatcher):
@@ -44,6 +45,11 @@ class GameState(EventDispatcher):
             The number of turns until a new enemy will spawn
         item_spawn_timer (int):
             The number of turns until a new item will spawn
+
+        eating_sound (Sound):
+            The sound to play when the player eats
+        punch_sound (Sound):
+            The sound to play when the player punches
     """
 
     curr_player_health = NumericProperty()
@@ -52,7 +58,8 @@ class GameState(EventDispatcher):
     player_attack_damage = NumericProperty()
     score = NumericProperty(0)
 
-    game_over = BooleanProperty(False)
+    eating_sound = SoundLoader.load("game/audio/eating.wav")
+    punch_sound = SoundLoader.load("game/audio/punch.wav")
 
     def __init__(self, width, height):
         """
@@ -172,6 +179,7 @@ class GameState(EventDispatcher):
                 If it's an Item, the player should use that item.
                 If it's a Creature, the player should attack the creature
             - If the player did something:
+                - Play the appropriate sound
                 - Handle the player's stat decay
                 - Handle the end of turn operations.
         """
@@ -186,9 +194,13 @@ class GameState(EventDispatcher):
                 did_something = self.move_player(tile_location)
             elif isinstance(entity, Item):
                 did_something = self.use_item(tile_location)
+                if did_something:
+                    self.eating_sound.play()
             elif isinstance(entity, Creature):
                 did_something = self.attack_creature(
                     self.player, tile_location)
+                if did_something:
+                    self.punch_sound.play()
 
         if did_something:
             self.handle_decay()
@@ -367,6 +379,12 @@ class GameState(EventDispatcher):
                 - Make them take their turn
                 - Stop advancing time
         """
+        for y in range(self.height):
+            for x in range(self.width):
+                entity = self.grid[y][x].entity
+                if isinstance(entity, Creature):
+                    print(entity)
+                    print(entity.turn_meter)
         while True:
             if not self.player.is_alive:
                 break

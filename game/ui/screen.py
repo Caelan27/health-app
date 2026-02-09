@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from game.ui.grid import GameGrid
+from kivy.core.audio import SoundLoader
 
 
 class GameScreen(Screen):
@@ -21,7 +22,12 @@ class GameScreen(Screen):
             The label displaying the player's attack damage
         - score_label (Label):
             The label displaying the player's score
+
+        - game_over_sound (Sound):
+            The sound to play when the game ends
     """
+
+    game_over_sound = SoundLoader.load("game/audio/game_over.wav")
 
     def __init__(self, **kwargs):
         """
@@ -71,6 +77,7 @@ class GameScreen(Screen):
         Displays the game over screen.
 
         Actions:
+            - Plays the game over sound effect
             - Clears all widgets from the screen
             - Creates a box layout
             - Adds a button to return to the home screen
@@ -80,6 +87,8 @@ class GameScreen(Screen):
             - Adds the box layout to the screen
         """
         if not self.gridlayout.game_state.player.is_alive:
+            self.game_over_sound.play()
+
             self.clear_widgets()
 
             boxlayout = BoxLayout(orientation="vertical",
