@@ -126,7 +126,7 @@ class CustomScreen(Screen):
         button.bind(on_release=on_release_func)
         self.layout.add_widget(button)
 
-    def _add_label(self, text, font_size=15):
+    def _add_label(self, text, font_size=40):
         """
         Adds a label to the layout
 
@@ -164,7 +164,7 @@ class CustomScreen(Screen):
             - Adds the label to the layout
         """
         self.title = self.curr_page[self.title_key]
-        title_label = AutoResizingLabel(text=self.title, font_size=40)
+        title_label = AutoResizingLabel(text=self.title, font_size=90)
         self.layout.add_widget(title_label)
 
     # ----------------------
