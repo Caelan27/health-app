@@ -379,12 +379,6 @@ class GameState(EventDispatcher):
                 - Make them take their turn
                 - Stop advancing time
         """
-        for y in range(self.height):
-            for x in range(self.width):
-                entity = self.grid[y][x].entity
-                if isinstance(entity, Creature):
-                    print(entity)
-                    print(entity.turn_meter)
         while True:
             if not self.player.is_alive:
                 break
