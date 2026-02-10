@@ -1,0 +1,17 @@
+{
+    "player": {
+        "health": {
+            "base": 10,
+            "scale": 1
+        },
+        "speed": {
+            "base": 15,
+            "scale": 1
+        },
+        "attack": {
+            "base": 2,
+            "scale": 1
+        },
+        "sprite": "player.png"
+    }
+}

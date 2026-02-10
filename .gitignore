@@ -1,2 +1,5 @@
 .kitty_venv/
 __pycache__/
+buildozer.spec
+.buildozer
+bin/

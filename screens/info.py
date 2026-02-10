@@ -83,7 +83,7 @@ class InfoScreen(CustomScreen):
         """
         for section in self.curr_page["sections"]:
             section_title = section["heading-title"]
-            self._add_label(text=section_title, font_size=30)
+            self._add_label(text=section_title, font_size=60)
 
             section_text = section["text"]
             self._add_label(text=section_text)

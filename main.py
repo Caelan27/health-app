@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager
-from screens.game import GameScreen
+from game.ui.screen import GameScreen
 from screens.home import HomeScreen
 from screens.info import InfoScreen
 from screens.quiz import QuizScreen
